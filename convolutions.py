@@ -1,12 +1,34 @@
 from PIL import Image;
+import math
 
-conv = [[0.04,0.04,0.04,0.04,0.04],
-        [0.04,0.04,0.04,0.04,0.04],
-        [0.04,0.04,0.04,0.04,0.04],
-        [0.04,0.04,0.04,0.04,0.04],
-        [0.04,0.04,0.04,0.04,0.04]]
+conv = [[1/273,4/273,7/273,4/273,1/273],
+        [4/273,16/273,26/273,16/273,4/273],
+        [7/273,26/273,41/273,26/273,7/273],
+        [4/273,16/273,26/273,16/273,4/273],
+        [1/273,4/273,7/273,4/273,1/273]]
 
-filename = "ImageConvolutions\shrek.jpg"
+filename = "ImageConvolutions\sonic.jpg"
+
+def guass(x,mu,sigma):
+    y = (x-mu)/sigma
+    return math.exp(-0.5*y*y)
+def generate2DGaussianFilter(dimensions):
+    mu = dimensions // 2
+    sigma = mu/2
+    s = 0
+    kernel = [[0 for i in range(dimensions)] for j in range(dimensions)]
+    for row in range(dimensions):
+        for col in range(dimensions):
+            a = guass(row,mu,sigma) * guass(col,mu,sigma)
+            s += a
+            kernel[row][col] = a
+    kernel = [[val/s for val in row] for row in kernel]
+    return kernel
+
+
+
+
+
 #Unused currently
 def getPixelCol(x,y,img):
     if ((y<0) or (y>img.size[1])):
@@ -47,4 +69,4 @@ def apply_convolution(conv,img):
 
 if __name__ == "__main__":
     loadIm = Image.open(filename)
-    apply_convolution(conv,loadIm)
+    apply_convolution(generate2DGaussianFilter(7),loadIm)
