@@ -1,5 +1,5 @@
-from PIL import Image;
 import math
+from PIL import Image
 
 conv = [[1/273,4/273,7/273,4/273,1/273],
         [4/273,16/273,26/273,16/273,4/273],
@@ -7,11 +7,12 @@ conv = [[1/273,4/273,7/273,4/273,1/273],
         [4/273,16/273,26/273,16/273,4/273],
         [1/273,4/273,7/273,4/273,1/273]]
 
-filename = "ImageConvolutions\sonic.jpg"
+filename = "sonic.jpg"
 
 def guass(x,mu,sigma):
     y = (x-mu)/sigma
     return math.exp(-0.5*y*y)
+
 def generate2DGaussianFilter(dimensions):
     mu = dimensions // 2
     sigma = mu/2
